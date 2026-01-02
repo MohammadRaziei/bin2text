@@ -60,15 +60,17 @@ if(DEFINED PYTHON_PROJECT_NAME)
         cython_transpile(${pyx_file} LANGUAGE CXX OUTPUT_VARIABLE source_file)
 
         # Create Python module
-        python_add_library(${MODULE_NAME} MODULE "${source_file}" WITH_SOABI)
+        python_add_library(${pyx_name} MODULE "${source_file}" WITH_SOABI)
 
-        # Install the Python module
-        install(TARGETS ${MODULE_NAME}
-            DESTINATION ${SKBUILD_PROJECT_NAME}
+        # Include directories for the module
+        target_include_directories(${pyx_name} PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/include
         )
 
-        # Only process the first .pyx file to avoid duplicate targets
-        break()
+        # Install the Python module
+        install(TARGETS ${pyx_name}
+            DESTINATION ${SKBUILD_PROJECT_NAME}
+        )
     endforeach()
 endif()
 
