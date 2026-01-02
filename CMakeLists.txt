@@ -76,18 +76,18 @@ endif()
 if(BUILD_TESTING)
     enable_testing()
 
-    # Create base64 test executable
-    add_executable(test_base64
+    # Create tests executable
+    add_executable(tests_cpp
         tests/cpp/test_base64.cpp
         tests/cpp/test_main.cpp
     )
 
     # Include directories for tests
-    target_include_directories(test_base64 PRIVATE
+    target_include_directories(tests_cpp PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/tests/cpp
     )
 
     # Add to test execution
-    add_test(NAME test_base64 COMMAND test_base64)
+    add_test(NAME tests_cpp COMMAND tests_cpp)
 endif()
