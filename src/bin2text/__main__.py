@@ -1,21 +1,25 @@
 """Command-line interface for bin2text."""
 
-import click
-from bin2text import hello_world, Calculator
+import argparse
+from bin2text import base64_encode, base64_decode
 
 
-@click.command()
-@click.option('--calculate', '-c', default=None, type=str,
-              help='Perform a calculation (e.g., "5 + 3")')
-def main(calculate):
+def main():
     """Simple command-line tool for bin2text."""
-    if calculate:
-        # Simple calculation example
-        calc = Calculator()
-        # This is just a basic example - in a real app you'd want proper parsing
-        print(f"Calculation result: {calculate} = {eval(calculate)}")  # NOQA
+    parser = argparse.ArgumentParser(description='Base64 encoding/decoding tool')
+    parser.add_argument('--encode', '-e', type=str, help='Encode a string to base64')
+    parser.add_argument('--decode', '-d', type=str, help='Decode a base64 string')
+
+    args = parser.parse_args()
+
+    if args.encode:
+        result = base64_encode(args.encode)
+        print(f"Encoded: {result}")
+    elif args.decode:
+        result = base64_decode(args.decode)
+        print(f"Decoded: {result}")
     else:
-        print(hello_world())
+        parser.print_help()
 
 
 if __name__ == "__main__":
