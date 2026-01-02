@@ -17,6 +17,9 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -DNDEBUG")
 endif()
 
+# Enable testing support
+option(BUILD_TESTING "Build tests" OFF)
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 # Find Python and Cython
@@ -25,7 +28,7 @@ find_package(Cython MODULE REQUIRED VERSION 3.0)
 include(UseCython)
 
 # Configure Cython module
-cython_transpile(src/${MODULE_NAME}/${MODULE_NAME}.pyx LANGUAGE CXX OUTPUT_VARIABLE source_file)
+cython_transpile(src/bin2text/bin2text.pyx LANGUAGE CXX OUTPUT_VARIABLE source_file)
 
 # Create Python module
 python_add_library(${MODULE_NAME} MODULE "${source_file}" WITH_SOABI)
@@ -40,3 +43,23 @@ set_target_properties(${MODULE_NAME} PROPERTIES
 install(TARGETS ${MODULE_NAME}
     DESTINATION ${SKBUILD_PROJECT_NAME}
 )
+
+# Add tests if BUILD_TESTING is enabled
+if(BUILD_TESTING)
+    enable_testing()
+
+    file(GLOB TEST_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/tests/cpp/test_*.cpp")
+
+
+    # Create base64 test executable
+    add_executable(tests_cpp ${TEST_SOURCES})
+
+    # Include directories for tests
+    target_include_directories(tests_cpp PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests/cpp
+    )
+
+    # Add to test execution
+    add_test(NAME tests_cpp COMMAND tests_cpp)
+endif()
