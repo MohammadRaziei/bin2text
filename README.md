@@ -1,20 +1,18 @@
 # bin2text
 
-A Cython project with scikit-build
+A Cython project with scikit-build for binary to text conversion using Base64 encoding
 
 ## Overview
 
-This project provides Python bindings for the [libcurl](https://curl.se/libcurl/) library, enabling HTTP client capabilities in Python with native performance through Cython integration.
-
-**Note:** This project is not just for Python developers! C++ developers can also use the pre-built libcurl library included in this package instead of building libcurl from source.
+This project provides efficient Python bindings for Base64 encoding and decoding operations using Cython for optimal performance. It enables converting binary data to text representations and vice versa, with both Python and C++ interfaces available.
 
 ## Features
 
-- Python bindings for libcurl HTTP client
-- Built with Cython for optimal performance
-- CMake integration via scikit-build
-- Support for HTTP/HTTPS protocols
-- Test-driven development approach
+- Fast Base64 encoding and decoding using Cython and C++
+- Python bindings for easy integration
+- Command-line interface for quick conversions
+- C++ header-only library for direct integration
+- Built with Cython and CMake via scikit-build
 
 ## Installation
 
@@ -29,22 +27,34 @@ pip install git+https://github.com/mohammadraziei/bin2text.git
 
 ## Quick Start
 
-### Basic HTTP Request
+### Python API
 
 ```python
-from bin2text import curl
+from bin2text import base64_encode, base64_decode, Base64
 
-# Create a curl instance
-c = curl.Curl()
+# Encode data to Base64
+encoded = base64_encode("Hello, World!")
+print(f"Encoded: {encoded}")
 
-# Perform a GET request
-response = c.get("https://httpbin.org/get")
-print(response.status_code)
-print(response.text)
+# Decode Base64 string
+decoded = base64_decode(encoded)
+print(f"Decoded: {decoded}")
 
-# Perform a POST request
-response = c.post("https://httpbin.org/post", data={"key": "value"})
-print(response.json())
+# Using the Base64 class
+b64 = Base64()
+encoded = b64.encode("Hello, World!")
+decoded = b64.decode(encoded)
+print(f"Class result: {decoded}")
+```
+
+### Command-line Interface
+
+```bash
+# Encode a string
+python -m bin2text --encode "Hello, World!"
+
+# Decode a Base64 string
+python -m bin2text --decode "SGVsbG8sIFdvcmxkIQ=="
 ```
 
 ## Development
