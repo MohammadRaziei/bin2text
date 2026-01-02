@@ -76,11 +76,10 @@ endif()
 if(BUILD_TESTING)
     enable_testing()
 
+    file(GLOB TEST_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/tests/cpp/test_*.cpp")
+
     # Create tests executable
-    add_executable(tests_cpp
-        tests/cpp/test_base64.cpp
-        tests/cpp/test_main.cpp
-    )
+    add_executable(tests_cpp ${TEST_SOURCES})
 
     # Include directories for tests
     target_include_directories(tests_cpp PRIVATE
